@@ -1,7 +1,231 @@
-echo "# Samspel-fr-gor" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/ribendahl/Samspel-fr-gor.git
-git push -u origin main
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ekologi-test</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #dfffe0, #e6f0ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      max-width: 850px;
+      width: 90%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    #question {
+      font-size: 20px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    button {
+      padding: 10px 14px;
+      margin: 6px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #4CAF50;
+      color: white;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+      background: #3e8e41;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    #score {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .start-screen {
+      text-align: center;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.2);
+      margin-right: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div id="start" class="start-screen">
+    <h1>Ekologi-test 🌿</h1>
+    <p>Testa dina kunskaper om ekologi</p>
+
+    <label>
+      <input type="checkbox" id="shuffle">
+      Blanda frågorna
+    </label>
+    <br><br>
+
+    <button onclick="startQuiz()">Starta test</button>
+  </div>
+
+  <div id="quiz" style="display:none;">
+    <div class="topbar">
+      <h2>Ekologi-test 🌱</h2>
+      <div id="score">Poäng: 0</div>
+    </div>
+
+    <div id="question"></div>
+    <div id="answers"></div>
+    <div id="result"></div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {q:"Vad behöver växter för att överleva?", answer:"Solen, koldioxid, vatten och näringsämnen."},
+  {q:"Vad kan växter tillverka?", answer:"Druvsocker och syre genom fotosyntes."},
+  {q:"Vilken formel beskriver fotosyntesen?", a:["koldioxid + syre -> vatten + druvsocker","vatten + koldioxid + energi -> syre + druvsocker","druvsocker -> syre + vatten","syre + vatten -> koldioxid + energi"], correct:1},
+  {q:"Vad är cellandningens formel?", a:["druvsocker + syre -> koldioxid + vatten + energi","vatten + koldioxid -> syre + druvsocker","syre + energi -> socker","koldioxid + vatten -> syre"], correct:0},
+  {q:"Vad är en producent?", answer:"Organismer som gör socker med fotosyntes."},
+  {q:"Vad är en konsument?", answer:"Organismer som äter andra organismer."},
+  {q:"Vad är en näringskedja?", answer:"Visar vem som äter vem."},
+  {q:"Vad är symbios?", answer:"Organismer som lever tillsammans."},
+  {q:"Vad är en toppkonsument?", answer:"Översta rovdjuret i en näringskedja."},
+  {q:"Vad är konkurrens?", answer:"Organismer tävlar om resurser."},
+  {q:"Vad är ekologisk nisch?", answer:"En arts plats i naturen."},
+  {q:"Vad är en generalist?", answer:"Art som klarar många miljöer."},
+  {q:"Vad är en specialist?", answer:"Art som kräver specifik miljö."}
+];
+
+let current = 0;
+let score = 0;
+let total = 0;
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function startQuiz() {
+  if (document.getElementById("shuffle").checked) {
+    shuffleArray(questions);
+  }
+
+  document.getElementById("start").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+
+  total = questions.length;
+  current = 0;
+  score = 0;
+
+  showQuestion();
+}
+
+function updateScore() {
+  document.getElementById("score").innerText = "Poäng: " + score;
+}
+
+function showQuestion() {
+  const q = questions[current];
+  document.getElementById("question").innerText = q.q;
+
+  const answers = document.getElementById("answers");
+  answers.innerHTML = "";
+  document.getElementById("result").innerText = "";
+
+  if (q.a) {
+    q.a.forEach((ans, i) => {
+      const btn = document.createElement("button");
+      btn.innerText = ans;
+      btn.onclick = () => check(i);
+      answers.appendChild(btn);
+    });
+  } else {
+    const btn = document.createElement("button");
+    btn.innerText = "Visa svar";
+    btn.onclick = () => {
+      document.getElementById("result").innerText = q.answer;
+    };
+    answers.appendChild(btn);
+  }
+
+  updateScore();
+}
+
+function check(i) {
+  const q = questions[current];
+
+  if (i === q.correct) {
+    score += 1;
+    document.getElementById("result").innerText = "Rätt! 🌱 +1 poäng";
+  } else {
+    score -= 1;
+    document.getElementById("result").innerText = "Fel ❌ -1 poäng";
+  }
+
+  updateScore();
+
+  setTimeout(() => {
+    current++;
+
+    if (current < questions.length) {
+      showQuestion();
+    } else {
+      showResult();
+    }
+  }, 800);
+}
+
+function showResult() {
+  document.getElementById("question").innerText = "Test klart! 🎉";
+  document.getElementById("answers").innerHTML = "";
+
+  let percent = ((score + total) / (2 * total)) * 100;
+
+  document.getElementById("result").innerText =
+    "Slutpoäng: " + score + " / " + total + " möjliga\n" +
+    "Procent: " + percent.toFixed(1) + "%";
+
+  document.getElementById("score").innerText = "";
+}
+
+</script>
+
+</body>
+</html>
