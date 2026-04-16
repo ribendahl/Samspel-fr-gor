@@ -1,4 +1,60 @@
-<!DOCTYPE html>
+<html lang="sv">
+{cat:"Predation", q:"Varför kan rovdjur vara bra för bytesdjurens population?", answer:"De tar ofta de svagaste individerna."},
+{cat:"Predation", q:"Varför varierar rovdjur och bytesdjur samtidigt?", answer:"Fler rovdjur minskar bytesdjuren vilket senare minskar rovdjuren."},
+
+// K. Försvar
+{cat:"Försvar", q:"Hur kan växter undvika att bli uppätna?", answer:"Genom taggar, gift eller dålig smak."},
+{cat:"Försvar", q:"Hur kan djur undvika att bli uppätna?", answer:"Fly, slåss, gömma sig eller lura fiender."},
+{cat:"Försvar", q:"Vad är mimikry?", answer:"När en art liknar en farlig art."},
+{cat:"Försvar", q:"Skillnad mellan kamouflage och mimikry?", answer:"Kamouflage döljer organismen, mimikry imiterar en annan."},
+
+// L. Konkurrens
+{cat:"Konkurrens", q:"Vad betyder konkurrens?", answer:"Organismer tävlar om resurser."},
+{cat:"Konkurrens", q:"Varför flyttar många djur?", answer:"För att hitta mer mat eller mindre konkurrens."},
+{cat:"Konkurrens", q:"Vad konkurrerar växter om?", answer:"Solljus, vatten och näringsämnen."},
+{cat:"Konkurrens", q:"Vad konkurrerar djur om?", answer:"Mat, vatten, boplatser och partners."},
+{cat:"Konkurrens", q:"Hur driver konkurrens evolution?", answer:"De bäst anpassade överlever och för sina gener vidare."},
+
+// M. Ekologisk nisch
+{cat:"Ekologisk nisch", q:"Vad är en ekologisk nisch?", answer:"En arts roll och plats i ekosystemet."},
+{cat:"Ekologisk nisch", q:"Vad händer om två arter har samma nisch?", answer:"De konkurrerar tills en försvinner."},
+{cat:"Ekologisk nisch", q:"Vad är en generalist?", answer:"Art som klarar många miljöer."},
+{cat:"Ekologisk nisch", q:"Ge exempel på generalister.", answer:"Räv, vildsvin och kråka."},
+{cat:"Ekologisk nisch", q:"Vad är en specialist?", answer:"Art som kräver en specifik miljö."},
+{cat:"Ekologisk nisch", q:"Ge exempel på specialister.", answer:"Koala och jättepanda."},
+{cat:"Ekologisk nisch", q:"Varför finns vissa arter bara på få platser?", answer:"De är specialister."},
+{cat:"Ekologisk nisch", q:"Varför har regnskogar så många arter?", answer:"Det finns många olika ekologiska nischer."}
+
+];
+
+let current = 0;
+let score = 0;
+let total = 0;
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function startQuiz() {
+  if (document.getElementById("shuffle").checked) {
+    shuffleArray(questions);
+  }
+
+  document.getElementById("start").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+
+  total = questions.length;
+  current = 0;
+  score = 0;
+
+  showQuestion();
+}
+
+function updateScore() {
+  document.getElementById("score").innerText = "Poäng: " + score;
 }
 
 function showQuestion() {
