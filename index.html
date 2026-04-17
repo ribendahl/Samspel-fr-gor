@@ -14,7 +14,7 @@ body {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 650px;
   margin: 40px auto;
   background: white;
   padding: 25px;
@@ -23,9 +23,7 @@ body {
   text-align: center;
 }
 
-h1 {
-  margin-bottom: 10px;
-}
+h1 { margin-bottom: 10px; }
 
 #progress {
   font-size: 14px;
@@ -49,32 +47,18 @@ button {
   cursor: pointer;
   width: 100%;
   font-size: 15px;
-  transition: 0.2s;
 }
 
-.answer-btn {
-  background: #f1f1f1;
-}
+.answer-btn { background: #f1f1f1; }
+.answer-btn:hover { background: #ddd; }
 
-.answer-btn:hover {
-  background: #ddd;
-}
-
-.correct {
-  background: #1d9e75 !important;
-  color: white;
-}
-
-.wrong {
-  background: #e24b4a !important;
-  color: white;
-}
+.correct { background: #1d9e75 !important; color: white; }
+.wrong { background: #e24b4a !important; color: white; }
 
 #nextBtn {
   display: none;
   background: #1d9e75;
   color: white;
-  margin-top: 10px;
 }
 
 #startBtn {
@@ -88,9 +72,6 @@ button {
   white-space: pre-line;
 }
 
-#score {
-  margin-top: 10px;
-}
 </style>
 </head>
 
@@ -110,7 +91,7 @@ button {
 
 <div id="progress"></div>
 
-<img id="image" src="" alt="">
+<img id="image" src="">
 
 <h2 id="question"></h2>
 
@@ -120,23 +101,23 @@ button {
 
 <button id="nextBtn" onclick="nextQuestion()">Nästa →</button>
 
-<p id="score"></p>
-
 </div>
 
 <script>
 
 const images = {
-  "Fotosyntes":"https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
-  "Cellandning":"https://images.unsplash.com/photo-1581091870627-3b1c3d3b9b7c",
-  "Ekologi":"https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-  "Näringskedjor":"https://images.unsplash.com/photo-1474511320723-9a56873867b5",
-  "Symbios":"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+  Fotosyntes:"https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+  Cellandning:"https://images.unsplash.com/photo-1581091870627-3b1c3d3b9b7c",
+  Ekologi:"https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+  Näringskedjor:"https://images.unsplash.com/photo-1474511320723-9a56873867b5",
+  Symbios:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
 };
 
 const questions = [
+
 {cat:"Fotosyntes", q:"Vad behöver växter för att överleva?", answer:"Solljus, koldioxid, vatten och näringsämnen"},
-{cat:"Fotosyntes", q:"Vad bildas i fotosyntesen?", answer:"Druvsocker och syre"},
+{cat:"Fotosyntes", q:"Vad kan en växt tillverka?", answer:"Druvsocker och syre"},
+
 {
 cat:"Fotosyntes",
 q:"Vilken formel är rätt för fotosyntesen?",
@@ -148,7 +129,17 @@ a:[
 ],
 correct:1
 },
-{cat:"Cellandning", q:"När sker cellandning i växter?", answer:"På natten och hela tiden"},
+
+{cat:"Fotosyntes", q:"Vilka organismer har fotosyntes?", answer:"Växter, alger och cyanobakterier"},
+{cat:"Fotosyntes", q:"Varför har inte djur fotosyntes?", answer:"De saknar klorofyll"},
+
+{cat:"Fotosyntes", q:"Vad använder växter sockret till?", answer:"Cellandning och lagring"},
+
+{cat:"Fotosyntes", q:"Vad gör växter i mörker?", answer:"De använder cellandning och kan växa sämre"},
+
+// CELLANDNING
+{cat:"Cellandning", q:"Vad kallas processen i växter på natten?", answer:"Cellandning"},
+
 {
 cat:"Cellandning",
 q:"Vilken formel är rätt för cellandningen?",
@@ -160,126 +151,143 @@ a:[
 ],
 correct:3
 },
-{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art som klarar många miljöer och ofta är allätare"},
-{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver specifik miljö och ofta har specifik föda"},
+
+{cat:"Cellandning", q:"Vilka organismer har cellandning?", answer:"Alla organismer"},
+
+{cat:"Ekologi", q:"Vad behöver djur för att överleva?", answer:"Vatten, syre och föda"},
+
+{cat:"Ekologi", q:"Vad är en producent?", answer:"Organismer som gör egen näring med fotosyntes"},
+
+{cat:"Ekologi", q:"Vad är en konsument?", answer:"Djur som äter andra organismer"},
+
+{cat:"Ekologi", q:"Vad är en nedbrytare?", answer:"Bryter ner döda organismer"},
+
+// GENERALIST / SPECIALIST (UPPDATERAT)
+{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art som klarar många miljöer och ofta är allätare (äter olika föda)"},
+
+{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver specifik miljö och ofta har en specifik föda"},
+
+{cat:"Ekologi", q:"Vad konkurrerar växter om?", answer:"Ljus, vatten och näring"},
+
+{cat:"Ekologi", q:"Vad konkurrerar djur om?", answer:"Mat, revir och partners"},
+
+// NÄRINGSKEDJOR
+{cat:"Näringskedjor", q:"Vad visar en näringskedja?", answer:"Vem äter vem"},
+
+{cat:"Näringskedjor", q:"Var börjar en näringskedja?", answer:"Alltid med en producent"},
+
+// SYMBIOS
+{cat:"Symbios", q:"Vad är symbios?", answer:"Samarbete mellan arter"},
+
+{cat:"Symbios", q:"Vad är mutualism?", answer:"Båda tjänar på samarbetet"},
+
+{cat:"Symbios", q:"Vad är parasitism?", answer:"En tjänar, en skadas"}
+
 ];
 
 let current = 0;
 let score = 0;
 
-function shuffleArray(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+function shuffleArray(arr){
+  for(let i=arr.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
   }
 }
 
-function startQuiz() {
-  console.log("Start klickad"); // DEBUG
-
-  if (document.getElementById("shuffle").checked) {
+function startQuiz(){
+  if(document.getElementById("shuffle").checked){
     shuffleArray(questions);
   }
 
   current = 0;
   score = 0;
 
-  document.getElementById("startBtn").style.display = "none";
+  document.getElementById("startBtn").style.display="none";
 
   showQuestion();
 }
 
-function showQuestion() {
+function showQuestion(){
+
   let q = questions[current];
 
   document.getElementById("question").innerText = q.q;
   document.getElementById("progress").innerText =
-    `Fråga ${current + 1} / ${questions.length}`;
+    `Fråga ${current+1} / ${questions.length}`;
 
-  // SÄKER bild (fix)
-  const img = document.getElementById("image");
-  if (images[q.cat]) {
-    img.src = images[q.cat];
-    img.style.display = "block";
-  } else {
-    img.style.display = "none";
-  }
+  document.getElementById("image").src = images[q.cat] || "";
 
   let answers = document.getElementById("answers");
   answers.innerHTML = "";
 
-  document.getElementById("resultBox").innerText = "";
-  document.getElementById("nextBtn").style.display = "none";
+  document.getElementById("resultBox").innerText="";
+  document.getElementById("nextBtn").style.display="none";
 
-  if (q.a) {
-    q.a.forEach((ans, i) => {
-      let btn = document.createElement("button");
-      btn.innerText = ans;
-      btn.className = "answer-btn";
-      btn.onclick = () => checkAnswer(i, btn);
+  if(q.a){
+
+    q.a.forEach((ans,i)=>{
+      let btn=document.createElement("button");
+      btn.innerText=ans;
+      btn.className="answer-btn";
+
+      btn.onclick=()=>{
+
+        let all=document.querySelectorAll(".answer-btn");
+        all.forEach(b=>b.disabled=true);
+
+        if(i===q.correct){
+          score++;
+          btn.classList.add("correct");
+          document.getElementById("resultBox").innerText="Rätt! 🌱 +1";
+        } else {
+          score--;
+          btn.classList.add("wrong");
+          document.getElementById("resultBox").innerText="Fel ❌ -1";
+        }
+
+        document.getElementById("nextBtn").style.display="block";
+      };
+
       answers.appendChild(btn);
     });
-  } else {
-    let btn = document.createElement("button");
-    btn.innerText = "Visa svar";
-    btn.className = "answer-btn";
 
-    btn.onclick = () => {
-      document.getElementById("resultBox").innerText = q.answer;
-      document.getElementById("nextBtn").style.display = "block";
+  } else {
+
+    let btn=document.createElement("button");
+    btn.innerText="Visa svar";
+    btn.className="answer-btn";
+
+    btn.onclick=()=>{
+      document.getElementById("resultBox").innerText=q.answer;
+      document.getElementById("nextBtn").style.display="block";
     };
 
     answers.appendChild(btn);
   }
-
-  updateScore();
 }
 
-function checkAnswer(i, btn) {
-  let q = questions[current];
-  let buttons = document.querySelectorAll(".answer-btn");
-
-  buttons.forEach(b => b.disabled = true);
-
-  if (i === q.correct) {
-    score++;
-    btn.classList.add("correct");
-    document.getElementById("resultBox").innerText = "Rätt! 🌱";
-  } else {
-    score--;
-    btn.classList.add("wrong");
-    document.getElementById("resultBox").innerText = "Fel ❌";
-  }
-
-  document.getElementById("nextBtn").style.display = "block";
-  updateScore();
-}
-
-function nextQuestion() {
+function nextQuestion(){
   current++;
-  if (current < questions.length) {
+  if(current<questions.length){
     showQuestion();
   } else {
     showResult();
   }
 }
 
-function showResult() {
-  let percent = Math.round(((score + questions.length) / (2 * questions.length)) * 100);
+function showResult(){
 
-  document.getElementById("question").innerText = "🎉 Klart!";
-  document.getElementById("answers").innerHTML = "";
-  document.getElementById("image").style.display = "none";
+  let percent=Math.round(((score+questions.length)/(2*questions.length))*100);
 
-  document.getElementById("resultBox").innerText =
+  document.getElementById("question").innerText="🎉 Klart!";
+  document.getElementById("answers").innerHTML="";
+  document.getElementById("image").style.display="none";
+
+  document.getElementById("resultBox").innerText=
     `Poäng: ${score}\nResultat: ${percent}%`;
 
-  document.getElementById("nextBtn").style.display = "none";
-  document.getElementById("startBtn").style.display = "block";
-}
-
-function updateScore() {
-  document.getElementById("score").innerText = "Poäng: " + score;
+  document.getElementById("nextBtn").style.display="none";
 }
 
 </script>
