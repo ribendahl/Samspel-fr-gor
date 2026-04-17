@@ -135,10 +135,8 @@ const images = {
 };
 
 const questions = [
-
 {cat:"Fotosyntes", q:"Vad behöver växter för att överleva?", answer:"Solljus, koldioxid, vatten och näringsämnen"},
 {cat:"Fotosyntes", q:"Vad bildas i fotosyntesen?", answer:"Druvsocker och syre"},
-
 {
 cat:"Fotosyntes",
 q:"Vilken formel är rätt för fotosyntesen?",
@@ -150,10 +148,7 @@ a:[
 ],
 correct:1
 },
-
 {cat:"Cellandning", q:"När sker cellandning i växter?", answer:"På natten och hela tiden"},
-{cat:"Cellandning", q:"Vad bildas vid cellandning?", answer:"Koldioxid, vatten och energi"},
-
 {
 cat:"Cellandning",
 q:"Vilken formel är rätt för cellandningen?",
@@ -165,21 +160,8 @@ a:[
 ],
 correct:3
 },
-
-{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art som klarar många miljöer och ofta är allätare (äter olika föda)"},
-{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver specifik miljö och ofta har en specifik föda"},
-{cat:"Ekologi", q:"Vad är en producent?", answer:"Organismer som gör sin egen näring via fotosyntes"},
-{cat:"Ekologi", q:"Ge exempel på producenter", answer:"Växter, alger och cyanobakterier"},
-{cat:"Ekologi", q:"Vad är en konsument?", answer:"Djur som äter andra organismer"},
-{cat:"Ekologi", q:"Vad är en nedbrytare?", answer:"Organismer som bryter ner döda växter och djur"},
-
-{cat:"Näringskedjor", q:"Vad visar en näringskedja?", answer:"Vem äter vem"},
-{cat:"Näringskedjor", q:"Var börjar en näringskedja?", answer:"Alltid med en producent"},
-
-{cat:"Symbios", q:"Vad är symbios?", answer:"Samarbete mellan arter"},
-{cat:"Symbios", q:"Vad är mutualism?", answer:"Båda arter tjänar på samarbetet"},
-{cat:"Symbios", q:"Vad är parasitism?", answer:"En art tjänar och den andra skadas"}
-
+{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art som klarar många miljöer och ofta är allätare"},
+{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver specifik miljö och ofta har specifik föda"},
 ];
 
 let current = 0;
@@ -193,6 +175,8 @@ function shuffleArray(arr) {
 }
 
 function startQuiz() {
+  console.log("Start klickad"); // DEBUG
+
   if (document.getElementById("shuffle").checked) {
     shuffleArray(questions);
   }
@@ -212,7 +196,14 @@ function showQuestion() {
   document.getElementById("progress").innerText =
     `Fråga ${current + 1} / ${questions.length}`;
 
-  document.getElementById("image").src = images[q.cat];
+  // SÄKER bild (fix)
+  const img = document.getElementById("image");
+  if (images[q.cat]) {
+    img.src = images[q.cat];
+    img.style.display = "block";
+  } else {
+    img.style.display = "none";
+  }
 
   let answers = document.getElementById("answers");
   answers.innerHTML = "";
@@ -225,9 +216,7 @@ function showQuestion() {
       let btn = document.createElement("button");
       btn.innerText = ans;
       btn.className = "answer-btn";
-
       btn.onclick = () => checkAnswer(i, btn);
-
       answers.appendChild(btn);
     });
   } else {
@@ -255,11 +244,11 @@ function checkAnswer(i, btn) {
   if (i === q.correct) {
     score++;
     btn.classList.add("correct");
-    document.getElementById("resultBox").innerText = "Rätt! 🌱 +1 poäng";
+    document.getElementById("resultBox").innerText = "Rätt! 🌱";
   } else {
     score--;
     btn.classList.add("wrong");
-    document.getElementById("resultBox").innerText = "Fel ❌ -1 poäng";
+    document.getElementById("resultBox").innerText = "Fel ❌";
   }
 
   document.getElementById("nextBtn").style.display = "block";
@@ -287,7 +276,6 @@ function showResult() {
 
   document.getElementById("nextBtn").style.display = "none";
   document.getElementById("startBtn").style.display = "block";
-  document.getElementById("startBtn").innerText = "Starta igen";
 }
 
 function updateScore() {
