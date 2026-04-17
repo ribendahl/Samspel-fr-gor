@@ -90,11 +90,33 @@ Blanda frågor
 const questions = [
 {cat:"Fotosyntes", q:"Vad behöver växter för att överleva?", answer:"Solljus, koldioxid, vatten och näringsämnen"},
 {cat:"Fotosyntes", q:"Vad bildas i fotosyntesen?", answer:"Druvsocker och syre"},
-{cat:"Fotosyntes", q:"Vilken formel är rätt?", answer:"Vatten + koldioxid + energi → syre + druvsocker"},
+
+{
+cat:"Fotosyntes",
+q:"Vilken formel är rätt för fotosyntesen?",
+a:[
+"koldioxid + syre → vatten + druvsocker + energi",
+"vatten + koldioxid + energi → syre + druvsocker",
+"druvsocker + koldioxid → vatten + syre",
+"druvsocker + syre → koldioxid + vatten + energi"
+],
+correct:1
+},
 
 {cat:"Cellandning", q:"När sker cellandning i växter?", answer:"På natten och hela tiden"},
 {cat:"Cellandning", q:"Vad bildas vid cellandning?", answer:"Koldioxid, vatten och energi"},
-{cat:"Cellandning", q:"Vilken formel är rätt?", answer:"Druvsocker + syre → koldioxid + vatten + energi"},
+
+{
+cat:"Cellandning",
+q:"Vilken formel är rätt för cellandningen?",
+a:[
+"koldioxid + syre → vatten + druvsocker + energi",
+"vatten + koldioxid + energi → syre + druvsocker",
+"druvsocker + koldioxid → vatten + syre",
+"druvsocker + syre → koldioxid + vatten + energi"
+],
+correct:3
+},
 
 {cat:"Ekologi", q:"Vad är en producent?", answer:"Organismer som gör sin egen näring via fotosyntes"},
 {cat:"Ekologi", q:"Ge exempel på producenter", answer:"Växter, alger och cyanobakterier"},
@@ -110,8 +132,8 @@ const questions = [
 
 {cat:"Ekologi", q:"Vad är konkurrens?", answer:"När organismer tävlar om resurser"},
 {cat:"Ekologi", q:"Vad är en ekologisk nisch?", answer:"En arts roll och plats i naturen"},
-{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art som klarar många miljöer"},
-{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver en specifik miljö"}
+{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art som klarar många miljöer och ofta är allätare (äter olika typer av föda)"},
+{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver en specifik miljö och ofta har en specifik föda"}
 ];
 
 let current = 0;
@@ -148,19 +170,57 @@ function showQuestion() {
   let answers = document.getElementById("answers");
   answers.innerHTML = "";
 
-  let btn = document.createElement("button");
-  btn.innerText = "Visa svar";
-  btn.className = "answer-btn";
-
-  btn.onclick = function() {
-    document.getElementById("resultBox").innerText = q.answer;
-    document.getElementById("nextBtn").style.display = "inline-block";
-  };
-
-  answers.appendChild(btn);
-
   document.getElementById("resultBox").innerText = "";
   document.getElementById("nextBtn").style.display = "none";
+
+  // FLERVALSFRÅGA
+  if (q.a) {
+    q.a.forEach((ans, i) => {
+      let btn = document.createElement("button");
+      btn.innerText = ans;
+      btn.className = "answer-btn";
+
+      btn.onclick = function() {
+        checkAnswer(i);
+      };
+
+      answers.appendChild(btn);
+    });
+  }
+
+  // VANLIG FRÅGA
+  else {
+    let btn = document.createElement("button");
+    btn.innerText = "Visa svar";
+    btn.className = "answer-btn";
+
+    btn.onclick = function() {
+      document.getElementById("resultBox").innerText = q.answer;
+      document.getElementById("nextBtn").style.display = "inline-block";
+    };
+
+    answers.appendChild(btn);
+  }
+
+  updateScore();
+}
+  function checkAnswer(i) {
+  let q = questions[current];
+
+  let buttons = document.querySelectorAll(".answer-btn");
+
+  buttons.forEach(b => b.disabled = true);
+
+  if (i === q.correct) {
+    score++;
+    document.getElementById("resultBox").innerText = "Rätt! 🌱 +1 poäng";
+  } else {
+    score--;
+    document.getElementById("resultBox").innerText = "Fel ❌ -1 poäng";
+  }
+
+  updateScore();
+  document.getElementById("nextBtn").style.display = "inline-block";
 }
 
 function nextQuestion() {
