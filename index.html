@@ -3,47 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ekologi - test</title>
+<title>Ekologi Quiz</title>
 
 <style>
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f4ef;
-  text-align: center;
-  padding: 20px;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(135deg, #1d9e75, #0f6d52);
+  margin: 0;
+  color: #333;
 }
 
 .container {
-  max-width: 700px;
-  margin: auto;
+  max-width: 600px;
+  margin: 40px auto;
   background: white;
-  padding: 20px;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+#progress {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
   border-radius: 12px;
+  margin-bottom: 15px;
 }
 
 button {
-  padding: 10px 15px;
-  margin: 5px;
+  padding: 12px;
+  margin: 6px 0;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  width: 100%;
+  font-size: 15px;
+  transition: 0.2s;
 }
 
 .answer-btn {
-  display: block;
-  width: 100%;
-  margin: 8px 0;
-  background: #eee;
+  background: #f1f1f1;
 }
 
 .answer-btn:hover {
   background: #ddd;
 }
 
+.correct {
+  background: #1d9e75 !important;
+  color: white;
+}
+
+.wrong {
+  background: #e24b4a !important;
+  color: white;
+}
+
 #nextBtn {
   display: none;
   background: #1d9e75;
   color: white;
+  margin-top: 10px;
 }
 
 #startBtn {
@@ -55,6 +86,10 @@ button {
   margin-top: 15px;
   font-weight: bold;
 }
+
+#score {
+  margin-top: 10px;
+}
 </style>
 </head>
 
@@ -62,16 +97,19 @@ button {
 
 <div class="container">
 
-<h1>Ekologi - instuderingsquiz</h1>
+<h1>🌿 Ekologi Quiz</h1>
 
 <label>
-<input type="checkbox" id="shuffle">
-Blanda frågor
+<input type="checkbox" id="shuffle"> Blanda frågor
 </label>
 
 <br><br>
 
-<button id="startBtn" onclick="startQuiz()">Starta test</button>
+<button id="startBtn" onclick="startQuiz()">Starta</button>
+
+<div id="progress"></div>
+
+<img id="image" src="" alt="">
 
 <h2 id="question"></h2>
 
@@ -79,13 +117,21 @@ Blanda frågor
 
 <div id="resultBox"></div>
 
-<button id="nextBtn" onclick="nextQuestion()">Gå vidare →</button>
+<button id="nextBtn" onclick="nextQuestion()">Nästa →</button>
 
 <p id="score"></p>
 
 </div>
 
 <script>
+
+const images = {
+  "Fotosyntes":"https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+  "Cellandning":"https://images.unsplash.com/photo-1581091870627-3b1c3d3b9b7c",
+  "Ekologi":"https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+  "Näringskedjor":"https://images.unsplash.com/photo-1474511320723-9a56873867b5",
+  "Symbios":"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+};
 
 const questions = [
 {cat:"Fotosyntes", q:"Vad behöver växter för att överleva?", answer:"Solljus, koldioxid, vatten och näringsämnen"},
@@ -103,7 +149,6 @@ a:[
 correct:1
 },
 
-{cat:"Cellandning", q:"När sker cellandning i växter?", answer:"På natten och hela tiden (enkelt kan man tänka fotosyntes på dagen och cellandning på natten)"},
 {cat:"Cellandning", q:"Vad bildas vid cellandning?", answer:"Koldioxid, vatten och energi"},
 
 {
@@ -118,27 +163,12 @@ a:[
 correct:3
 },
 
-{cat:"Ekologi", q:"Vad är en producent?", answer:"Organismer som gör sin egen näring via fotosyntes"},
-{cat:"Ekologi", q:"Ge exempel på producenter", answer:"Växter, alger och cyanobakterier"},
-{cat:"Ekologi", q:"Vad är en konsument?", answer:"Djur som äter andra organismer"},
-{cat:"Ekologi", q:"Vad är en nedbrytare?", answer:"Organismer som bryter ner döda växter och djur"},
-
-{cat:"Näringskedjor", q:"Vad visar en näringskedja?", answer:"Vem äter vem"},
-{cat:"Näringskedjor", q:"Var börjar en näringskedja?", answer:"Alltid med en producent"},
-
-{cat:"Symbios", q:"Vad är symbios?", answer:"Samarbete mellan arter"},
-{cat:"Symbios", q:"Vad är mutualism?", answer:"Båda arter tjänar på samarbetet"},
-{cat:"Symbios", q:"Vad är parasitism?", answer:"En art tjänar och den andra skadas"},
-
-{cat:"Ekologi", q:"Vad är konkurrens?", answer:"När organismer tävlar om resurser"},
-{cat:"Ekologi", q:"Vad är en ekologisk nisch?", answer:"En arts roll och plats i naturen"},
-{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art är allätare (äter olika typer av föda)"},
-{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver en specifik miljö och ofta har en specifik föda"}
+{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art som klarar många miljöer och ofta är allätare"},
+{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver specifik miljö och ofta specifik föda"}
 ];
 
 let current = 0;
 let score = 0;
-let total = 0;
 
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -154,18 +184,20 @@ function startQuiz() {
 
   current = 0;
   score = 0;
-  total = questions.length;
 
   document.getElementById("startBtn").style.display = "none";
 
   showQuestion();
-  updateScore();
 }
 
 function showQuestion() {
   let q = questions[current];
 
   document.getElementById("question").innerText = q.q;
+  document.getElementById("progress").innerText =
+    `Fråga ${current + 1} / ${questions.length}`;
+
+  document.getElementById("image").src = images[q.cat];
 
   let answers = document.getElementById("answers");
   answers.innerHTML = "";
@@ -173,30 +205,24 @@ function showQuestion() {
   document.getElementById("resultBox").innerText = "";
   document.getElementById("nextBtn").style.display = "none";
 
-  // FLERVALSFRÅGA
   if (q.a) {
     q.a.forEach((ans, i) => {
       let btn = document.createElement("button");
       btn.innerText = ans;
       btn.className = "answer-btn";
 
-      btn.onclick = function() {
-        checkAnswer(i);
-      };
+      btn.onclick = () => checkAnswer(i, btn);
 
       answers.appendChild(btn);
     });
-  }
-
-  // VANLIG FRÅGA
-  else {
+  } else {
     let btn = document.createElement("button");
     btn.innerText = "Visa svar";
     btn.className = "answer-btn";
 
-    btn.onclick = function() {
+    btn.onclick = () => {
       document.getElementById("resultBox").innerText = q.answer;
-      document.getElementById("nextBtn").style.display = "inline-block";
+      document.getElementById("nextBtn").style.display = "block";
     };
 
     answers.appendChild(btn);
@@ -204,28 +230,29 @@ function showQuestion() {
 
   updateScore();
 }
-  function checkAnswer(i) {
-  let q = questions[current];
 
+function checkAnswer(i, btn) {
+  let q = questions[current];
   let buttons = document.querySelectorAll(".answer-btn");
 
   buttons.forEach(b => b.disabled = true);
 
   if (i === q.correct) {
     score++;
-    document.getElementById("resultBox").innerText = "Rätt! 🌱 +1 poäng";
+    btn.classList.add("correct");
+    document.getElementById("resultBox").innerText = "Rätt! 🌱";
   } else {
     score--;
-    document.getElementById("resultBox").innerText = "Fel ❌ -1 poäng";
+    btn.classList.add("wrong");
+    document.getElementById("resultBox").innerText = "Fel ❌";
   }
 
+  document.getElementById("nextBtn").style.display = "block";
   updateScore();
-  document.getElementById("nextBtn").style.display = "inline-block";
 }
 
 function nextQuestion() {
   current++;
-
   if (current < questions.length) {
     showQuestion();
   } else {
@@ -233,26 +260,18 @@ function nextQuestion() {
   }
 }
 
-function correctAnswer() {
-  score += 1;
-}
-
-function wrongAnswer() {
-  score -= 1;
-}
-
 function showResult() {
-  document.getElementById("question").innerText = "Test klart! 🎉";
-  document.getElementById("answers").innerHTML = "";
-  document.getElementById("nextBtn").style.display = "none";
+  let percent = Math.round(((score + questions.length) / (2 * questions.length)) * 100);
 
-  let percent = Math.round(((score + total) / (2 * total)) * 100);
+  document.getElementById("question").innerText = "🎉 Klart!";
+  document.getElementById("answers").innerHTML = "";
+  document.getElementById("image").style.display = "none";
 
   document.getElementById("resultBox").innerText =
-    "Poäng: " + score + " av " + total +
-    "\nResultat: " + percent + "%";
+    `Poäng: ${score}\nResultat: ${percent}%`;
 
-  document.getElementById("startBtn").style.display = "inline-block";
+  document.getElementById("nextBtn").style.display = "none";
+  document.getElementById("startBtn").style.display = "block";
   document.getElementById("startBtn").innerText = "Starta igen";
 }
 
