@@ -1,3 +1,129 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ekologi Quiz</title>
+
+<style>
+body {
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(135deg, #1d9e75, #0f6d52);
+  margin: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+#progress {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+button {
+  padding: 12px;
+  margin: 6px 0;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.answer-btn {
+  background: #f1f1f1;
+}
+
+.answer-btn:hover {
+  background: #ddd;
+}
+
+.correct {
+  background: #1d9e75 !important;
+  color: white;
+}
+
+.wrong {
+  background: #e24b4a !important;
+  color: white;
+}
+
+#nextBtn {
+  display: none;
+  background: #1d9e75;
+  color: white;
+  margin-top: 10px;
+}
+
+#startBtn {
+  background: #1d9e75;
+  color: white;
+}
+
+#resultBox {
+  margin-top: 15px;
+  font-weight: bold;
+  white-space: pre-line;
+}
+
+#score {
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌿 Ekologi Quiz</h1>
+
+<label>
+<input type="checkbox" id="shuffle"> Blanda frågor
+</label>
+
+<br><br>
+
+<button id="startBtn" onclick="startQuiz()">Starta</button>
+
+<div id="progress"></div>
+
+<img id="image" src="" alt="">
+
+<h2 id="question"></h2>
+
+<div id="answers"></div>
+
+<div id="resultBox"></div>
+
+<button id="nextBtn" onclick="nextQuestion()">Nästa →</button>
+
+<p id="score"></p>
+
+</div>
+
 <script>
 
 const images = {
@@ -40,8 +166,8 @@ a:[
 correct:3
 },
 
-{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art som klarar många miljöer och ofta är allätare"},
-{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver specifik miljö och ofta specifik föda"},
+{cat:"Ekologi", q:"Vad är en generalist?", answer:"En art som klarar många miljöer och ofta är allätare (äter olika föda)"},
+{cat:"Ekologi", q:"Vad är en specialist?", answer:"En art som kräver specifik miljö och ofta har en specifik föda"},
 {cat:"Ekologi", q:"Vad är en producent?", answer:"Organismer som gör sin egen näring via fotosyntes"},
 {cat:"Ekologi", q:"Ge exempel på producenter", answer:"Växter, alger och cyanobakterier"},
 {cat:"Ekologi", q:"Vad är en konsument?", answer:"Djur som äter andra organismer"},
@@ -129,11 +255,11 @@ function checkAnswer(i, btn) {
   if (i === q.correct) {
     score++;
     btn.classList.add("correct");
-    document.getElementById("resultBox").innerText = "Rätt! 🌱";
+    document.getElementById("resultBox").innerText = "Rätt! 🌱 +1 poäng";
   } else {
     score--;
     btn.classList.add("wrong");
-    document.getElementById("resultBox").innerText = "Fel ❌";
+    document.getElementById("resultBox").innerText = "Fel ❌ -1 poäng";
   }
 
   document.getElementById("nextBtn").style.display = "block";
@@ -169,3 +295,6 @@ function updateScore() {
 }
 
 </script>
+
+</body>
+</html>
